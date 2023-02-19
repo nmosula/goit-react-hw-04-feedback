@@ -1,19 +1,44 @@
 import React from "react";
 import "./Feedback.styled.css";
+import Statistics from "./Statistics";
 
 class Feedback extends React.Component {
-    handleBtnGood() {
-        console.log("Good");
+
+    state = {
+        good: 0,
+        neutral: 0,
+        bad: 0,
+    }
+    
+    countTotalFeedback() {
+        return this.state.good + this.state.neutral + this.state.bad;
     }
 
-    handleBtnNeutral() {
-        console.log("Neutral");
+    countPositiveFeedbackPercentage() {
+        let percentage = 0;
+
+        if (this.countTotalFeedback() !== 0) percentage = Math.round((this.state.good / this.countTotalFeedback()) * 100);
+        return percentage;
     }
 
-    handleBtnBad() {
-        console.log("Bad");
+    handleBtnGood = () => {
+        this.setState(currentState => ({
+            good: currentState.good + 1,
+        }))
     }
 
+    handleBtnNeutral = () => {
+        this.setState(currentState => ({
+            neutral: currentState.neutral + 1,
+        }))
+    }
+
+    handleBtnBad = () => {
+        this.setState(currentState => ({
+            bad: currentState.bad + 1,
+        }))
+    }
+    
     render() {
         return (
             <div className="container">
@@ -25,7 +50,9 @@ class Feedback extends React.Component {
                     <button type="button" onClick={this.handleBtnBad}>Bad</button>
                 </div>
 
-                <h3>Statistics</h3>
+                <Statistics good={this.state.good} neutral={this.state.neutral} bad={this.state.bad} total={this.countTotalFeedback()} percentage={this.countPositiveFeedbackPercentage()} />
+
+
             </div>
         )
     }
