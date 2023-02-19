@@ -1,6 +1,10 @@
 import React from "react";
-import "./Feedback.styled.css";
-import Statistics from "./Statistics";
+import FeedbackOptions from "components/FeedbackOptions";
+import Notification from "components/Notification";
+import Section from "components/Section";
+import Statistics from "components/Statistics";
+import { Container } from './Feedback.styled';
+
 
 class Feedback extends React.Component {
 
@@ -41,19 +45,28 @@ class Feedback extends React.Component {
     
     render() {
         return (
-            <div className="container">
-                <h2>Please leave feedback</h2>
+            <Container>
+                <Section title="Please leave feedback">
 
-                <div className="buttonList">
-                    <button type="button" onClick={this.handleBtnGood}>Good</button>
-                    <button type="button" onClick={this.handleBtnNeutral}>Neutral</button>
-                    <button type="button" onClick={this.handleBtnBad}>Bad</button>
-                </div>
+                    <FeedbackOptions
+                        OnClickBtnGood={this.handleBtnGood}
+                        OnClickBtnNeutral={this.handleBtnNeutral}
+                        OnClickBtnBad={this.handleBtnBad}
+                    />
+                    
+                </Section>
 
-                <Statistics good={this.state.good} neutral={this.state.neutral} bad={this.state.bad} total={this.countTotalFeedback()} percentage={this.countPositiveFeedbackPercentage()} />
-
-
-            </div>
+                {this.countTotalFeedback() > 0 ? (
+                        <Statistics 
+                            good={this.state.good}
+                            neutral={this.state.neutral}
+                            bad={this.state.bad}
+                            total={this.countTotalFeedback()}
+                            percentage={this.countPositiveFeedbackPercentage()}
+                        />
+                ) : (<Notification message="There is no feedback"/>)
+                }
+            </Container>
         )
     }
 }
