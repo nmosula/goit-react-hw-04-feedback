@@ -15,7 +15,7 @@ class Feedback extends React.Component {
     }
     
     countTotalFeedback() {
-        return this.state.good + this.state.neutral + this.state.bad;
+        return Object.values(this.state).reduce((acc, value) => acc + value, 0);
     }
 
     countPositiveFeedbackPercentage() {
@@ -25,35 +25,20 @@ class Feedback extends React.Component {
         return percentage;
     }
 
-    handleBtnGood = () => {
-        this.setState(currentState => ({
-            good: currentState.good + 1,
-        }))
-    }
-
-    handleBtnNeutral = () => {
-        this.setState(currentState => ({
-            neutral: currentState.neutral + 1,
-        }))
-    }
-
-    handleBtnBad = () => {
-        this.setState(currentState => ({
-            bad: currentState.bad + 1,
-        }))
+    onLeaveFeedback = (event) => {
+        return this.setState(prevState => ({
+            [event]: prevState[event] + 1,
+        }));
     }
     
     render() {
         return (
             <Container>
                 <Section title="Please leave feedback">
-
                     <FeedbackOptions
-                        OnClickBtnGood={this.handleBtnGood}
-                        OnClickBtnNeutral={this.handleBtnNeutral}
-                        OnClickBtnBad={this.handleBtnBad}
+                        options={Object.keys(this.state)}
+                        onLeaveFeedback={this.onLeaveFeedback}
                     />
-                    
                 </Section>
 
                 {this.countTotalFeedback() > 0 ? (
